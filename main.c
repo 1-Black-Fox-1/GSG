@@ -315,7 +315,7 @@ void start_game() {
                 }
                 if (y == 0 || y == (field.y - 1)) {
                     append_buffer(&game_screen_b, &game_screen_b_size,
-                            "-", strlen("-"));
+                            "─", strlen("─"));
                     // printf("-");
                     continue;
                 }
