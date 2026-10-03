@@ -29,7 +29,7 @@ void open_settings(const char*);
 void save_bindings(const char*);
 void set_raw_terminal();
 void set_canonical_terminal();
-void *read_input();
+void *read_input(void*);
 int vec2_cmp(const Vector2, const Vector2);
 Vector2 vec2_sum(const Vector2, const Vector2);
 Vector2 generate_food(const Vector2*, const size_t, const Vector2);
@@ -417,6 +417,8 @@ void start_game() {
     free(snake);
     sleep(1);
     pthread_cancel(id_read_input);
+    pthread_join(id_read_input, NULL);
+    pthread_mutex_destroy(&v2move_mutex);
     system("clear");
     write(STDOUT_FILENO, "\x1b[?25h", 6);
     set_canonical_terminal();
@@ -470,7 +472,7 @@ void append_buffer(char **b, size_t *b_s, const char *s, const size_t s_s) {
     // *b[new_size - 1] = 0;
 }
 
-void *read_input() {
+void *read_input(void*) {
     char c;
     const Vector2 move_up_vec2 = {0, -1};
     const Vector2 move_down_vec2 = {0, 1};
